@@ -2,6 +2,8 @@ package it.polito.tdp.alien;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -39,6 +41,9 @@ public class FXMLController {
 
 	@FXML
     void doReset(ActionEvent event) {
+		txtOutput.clear();
+		txtInput.clear();
+		
 
     }
 
@@ -47,17 +52,24 @@ public class FXMLController {
     	String stringa = txtInput.getText(); 
     	String[] parole= stringa.split(" ");
     	
+    	if(!Pattern.matches("[a-zA-Z]+",parole[0])) {
+    		txtOutput.setText("La stringa può contenere colo caratteri alfabetici, riprovare");
+    		txtInput.clear();
+    		return; 
+    	}
+    	
+    	
     	if(parole.length == 1) {
-    		txtOutput.setText("La parola "+parole[0]+" è presente con traduzione: "+model.traduci(parole[0]));
+    		txtOutput.setText("La parola "+parole[0]+" è presente con traduzione: \n"+model.traduci(parole[0]));
     	}   		
     	else {    
-    		model.aggiungi(parole[0], parole[1]);
+    		model.aggiungiDuplicati(parole[0], parole[1]);
     		txtOutput.setText(parole[0]+" aggiunta con traduzione "+parole[1]);
     		
     	}
 
     		
-    		
+    	txtInput.clear();
 
     }
 
